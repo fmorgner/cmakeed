@@ -60,6 +60,7 @@
     <module>../de.marw.cmakeed.assist</module>
     <module>../de.marw.cmakeed.assist.tests</module>
     <module>../com.cthing.cmakeed.site</module>
+    <module>../com.cthing.cmakeed.parser</module>
   </modules>
 
   <scm>
