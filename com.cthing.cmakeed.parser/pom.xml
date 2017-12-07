@@ -12,4 +12,26 @@
 	<artifactId>com.cthing.cmakeed.parser</artifactId>
 	<version>1.0.0</version>
 	<packaging>eclipse-plugin</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr4-maven-plugin</artifactId>
+				<version>4.5</version>
+				<configuration>
+					<sourceDirectory>grammar</sourceDirectory>
+					<outputDirectory>target/generated-sources/antlr4/com/cthing/cmakeed/parser/llparser</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>antlr</id>
+						<goals>
+							<goal>antlr4</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
