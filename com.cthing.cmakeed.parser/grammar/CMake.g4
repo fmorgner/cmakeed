@@ -8,19 +8,20 @@ package com.cthing.cmakeed.parser.llparser;
  * Source Files
  */
 file         : file_element* ;
-file_element : command_invocation line_ending
-             | (bracket_comment|WS)* line_ending
+file_element : command_invocation line_comment? NEWLINE # FileElement
+             | bracket_comment line_comment? NEWLINE    # FileElement
+             | WS* line_comment? NEWLINE                # FileElement
              ;
-line_ending  : line_comment? NEWLINE ;
+// line_ending  : line_comment? NEWLINE # LineEnding ;
 
 /**
  * Command Invocations
  */
-command_invocation  : identifier '(' arguments (WS|line_ending)* ')' ;
-identifier          : ID ;
+command_invocation  : name=identifier '(' args=arguments (WS|line_comment? NEWLINE)* ')' # CommandInvocation ;  
+identifier          : id=ID ;
 arguments           : argument? separated_arguments* ;
-separated_arguments : (WS|line_ending)+ argument
-                    | (WS|line_ending)+ '(' arguments ')'
+separated_arguments : (WS|line_comment? NEWLINE)+ argument          # SeparatedArguments
+                    | (WS|line_comment? NEWLINE)+ '(' arguments ')' # SeparatedArguments
                     ;
 
 /**
@@ -32,57 +33,47 @@ argument : (bracket_argument | quoted_argument | unquoted_argument) ;
  * Bracket Argument
  */
 
-bracket_argument locals [ String O = ""; ] : '[' (EQUALS { $O = $EQUALS.text; })+ '[' content=bracket_content ']' {_input.LT(1).getText().equals($O)}? EQUALS ']' ;
-bracket_content                            : (.|'\'')*? ;
+bracket_argument locals [ String O = ""; ] : '[' (EQUALS { $O = $EQUALS.text; })+ '[' content=bracket_content ']' {_input.LT(1).getText().equals($O)}? EQUALS ']' # BracketArgument ;
+bracket_content                            : (.|'\'')*? # BracketedContent ;
 
 /**
  * Quoted Argument
  */
-quoted_argument     : '"' quoted_element* '"' ;
-quoted_element      : (escape_sequence|variable_reference|quoted_continuation|~('\\'|'"')+?)+
-                    // | escape_sequence
-                    // | variable_reference
-                    // | quoted_continuation
-                    ;
-quoted_continuation : '\\' NEWLINE ;
+quoted_argument     : '"' quoted_element* '"' # QuotedArgument ;
+quoted_element      : (escape_sequence|variable_reference|'\\' NEWLINE|~('\\'|'"')+?)+ # QuotedElement ;
 
 /**
  * Unquoted Argument
  * 
  * TODO: implement 'unquoted_legacy'
  */
-unquoted_argument : unquoted_element+ ;
-unquoted_element  : ~(WS|'('|')'|'#'|'"'|'\\'|NEWLINE)+
-                  | escape_sequence
+unquoted_argument : elements=unquoted_element+ # UnquotedArgument ;
+unquoted_element  : variable_reference                  # UnquotedElement
+                  | escape_sequence                     # UnquotedElement
+                  | ~(WS|'('|')'|'#'|'"'|'\\'|NEWLINE)+ # UnquotedElement
                   ;
 
 /**
  * Escape Sequences
  */
-escape_sequence  : escape_identity
-                 | escape_encoded
-                 | escape_semicolon
+escape_sequence  : '\\' ~(ALPHANUM|';') # EscapeIdentity
+                 | ('\\t'|'\\r'|'\\n') # EscapeEncoded
+                 | '\\;' # EscapeSemicolon
                  ;
-escape_identity  : '\\' ~(ALPHANUM|';') ;
-escape_encoded   : '\\t'
-                 | '\\r'
-                 | '\\n'
-                 ;
-escape_semicolon : '\\;' ;
 
 /**
  * Variable Reference
  */
-variable_reference : '${' variable_name '}' ;
-variable_name      : variable_id+
-                   | variable_id* variable_reference variable_id* ;
-variable_id        : (ID|'/'|'.'|'+'|'-'|escape_sequence) ;
+variable_reference : '${' variable_name '}' # VariableReference ;
+variable_name      : variable_id+                                  # VariableName
+                   | variable_id* variable_reference variable_id*  # VariableName ;
+variable_id        : (ID|'/'|'.'|'+'|'-'|escape_sequence) # VariableIdentifier ;
 
 /**
  * Comments
  */
-bracket_comment : '#' bracket_argument ;
-line_comment : '#' ~(NEWLINE)*? ;
+bracket_comment : '#' bracket_argument # BracketComment ;
+line_comment : '#' ~(NEWLINE)*? # LineComment ;
 
 /**
  * Lexer Rules

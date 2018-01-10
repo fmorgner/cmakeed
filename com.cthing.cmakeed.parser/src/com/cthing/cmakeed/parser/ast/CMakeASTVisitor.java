@@ -1,0 +1,62 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Institute for Software.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+
+package com.cthing.cmakeed.parser.ast;
+
+/**
+ * The interface of an AST visitor.
+ * 
+ * @since 1.0.0
+ */
+public interface CMakeASTVisitor {
+
+	public static enum Decision {
+		/**
+		 * Continue AST traversal
+		 */
+		CONTINUE,
+
+		/**
+		 * Abort the whole AST traversal
+		 */
+		ABORT,
+
+		/**
+		 * Skip the children of the current node during traversal
+		 */
+		SKIP,
+	}
+
+	/**
+	 * Callback that gets called when a file (CMakeLists.txt, CMake script, CMake
+	 * module) is encountered during AST traversal.
+	 * 
+	 * @param file
+	 *            The {@link CMakeASTNode} representing the file being visited.
+	 * @return A {@link Decision} describing whether to continue traversal, skip the
+	 *         node's children, or abort the whole traversal.
+	 */
+	default Decision visitFile(CMakeASTNode file) {
+		return Decision.CONTINUE;
+	}
+
+	/**
+	 * Callback that gets called when a command invocation is encountered during AST
+	 * traversal.
+	 * 
+	 * @param invocation
+	 *            The {@link CMakeASTNodeCommandInvocation} representing the command
+	 *            invocation being visited.
+	 * @return A {@link Decision} describing whether to continue traversal, skip the
+	 *         node's children, or abort the whole traversal.
+	 */
+	default Decision visitCommandInvocation(CMakeASTNodeCommandInvocation invocation) {
+		return Decision.CONTINUE;
+	}
+
+}

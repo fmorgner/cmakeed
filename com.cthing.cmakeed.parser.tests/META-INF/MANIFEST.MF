@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CMakeEd CMake Language Parser Tests
+Bundle-SymbolicName: com.cthing.cmakeed.parser.tests;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.cthing.cmakeed.parser.tests.CMakeParserTestPlugin
+Bundle-Vendor: Institute for Software
+Require-Bundle: org.eclipse.core.runtime,
+ org.junit,
+ com.cthing.cmakeed.parser,
+ org.antlr.runtime
+Bundle-ActivationPolicy: lazy
