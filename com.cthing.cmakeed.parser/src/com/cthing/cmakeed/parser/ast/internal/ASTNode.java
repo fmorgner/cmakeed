@@ -10,7 +10,7 @@ import com.cthing.cmakeed.parser.ast.CMakeASTNode;
 import com.cthing.cmakeed.parser.ast.CMakeASTVisitor;
 import com.cthing.cmakeed.parser.ast.CMakeASTVisitor.Decision;
 
-abstract class AbstractNode implements CMakeASTNode {
+abstract class ASTNode implements CMakeASTNode {
 
 	protected final List<CMakeASTNode> fChildren = new ArrayList<>();
 	protected Optional<CMakeASTNode> fParent = Optional.empty();
@@ -40,13 +40,13 @@ abstract class AbstractNode implements CMakeASTNode {
 		return decision != Decision.ABORT;
 	}
 
-	protected AbstractNode setParent(AbstractNode parent) {
+	protected ASTNode setParent(ASTNode parent) {
 		fParent = Optional.of(parent);
 		parent.add(this);
 		return this;
 	}
 
-	protected void add(AbstractNode abstractNode) {
+	protected void add(ASTNode abstractNode) {
 		fChildren.add(abstractNode);
 	}
 }

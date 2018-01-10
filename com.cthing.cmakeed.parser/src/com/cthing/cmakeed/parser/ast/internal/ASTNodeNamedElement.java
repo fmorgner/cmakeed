@@ -4,11 +4,11 @@ import java.util.Objects;
 
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeNamedElement;
 
-class AbstractNamedNode extends AbstractNode implements CMakeASTNodeNamedElement {
+class ASTNodeNamedElement extends ASTNode implements CMakeASTNodeNamedElement {
 
 	protected final String fName;
 	
-	protected AbstractNamedNode(String name) {
+	protected ASTNodeNamedElement(String name) {
 		fName = Objects.requireNonNull(name);
 	}
 	

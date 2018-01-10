@@ -2,11 +2,11 @@ package com.cthing.cmakeed.parser.ast.internal;
 
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeArgument;
 
-public class Argument extends AbstractNode implements CMakeASTNodeArgument {
+public class ASTNodeArgument extends ASTNode implements CMakeASTNodeArgument {
 
 	private final String fValue;
 	
-	Argument(String value) {
+	ASTNodeArgument(String value) {
 		fValue = value;
 	}
 	

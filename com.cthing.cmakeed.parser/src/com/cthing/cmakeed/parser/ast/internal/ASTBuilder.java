@@ -12,22 +12,22 @@ import com.cthing.cmakeed.parser.llparser.CMakeParser.FileContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.UnquotedArgumentContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.Unquoted_elementContext;
 
-public class ASTBuilder extends CMakeBaseVisitor<AbstractNode> {
+public class ASTBuilder extends CMakeBaseVisitor<ASTNode> {
 
 	private static class ArgumentCollector extends CMakeBaseVisitor<Void> {
 		
-		private final List<Argument> arguments = new ArrayList<>();
+		private final List<ASTNodeArgument> arguments = new ArrayList<>();
 		
 		@Override
 		public Void visitUnquotedArgument(UnquotedArgumentContext ctx) {
 			ctx.unquoted_element().stream()
 				.map(Unquoted_elementContext::getText)
-				.map(Argument::new)
+				.map(ASTNodeArgument::new)
 				.forEach(arguments::add);
 			return null;
 		}
 		
-		public static Stream<Argument> collect(ArgumentsContext ctx) {
+		public static Stream<ASTNodeArgument> collect(ArgumentsContext ctx) {
 			ArgumentCollector collector = new ArgumentCollector();
 			ctx.accept(collector);
 			return collector.arguments.stream();
@@ -36,8 +36,8 @@ public class ASTBuilder extends CMakeBaseVisitor<AbstractNode> {
 	}
 	
 	@Override
-	public AbstractNode visitFile(FileContext ctx) {
-		File file = new File();
+	public ASTNode visitFile(FileContext ctx) {
+		ASTNodeFile file = new ASTNodeFile();
 
 		ctx.file_element().stream()
 			.map(e -> e.accept(this))
@@ -48,15 +48,15 @@ public class ASTBuilder extends CMakeBaseVisitor<AbstractNode> {
 	}
 
 	@Override
-	public AbstractNode visitCommandInvocation(CommandInvocationContext ctx) {
-		final CommandInvocation invocation = new CommandInvocation(ctx.name.id.getText());
-		Stream<Argument> collect = ArgumentCollector.collect(ctx.arguments());
+	public ASTNode visitCommandInvocation(CommandInvocationContext ctx) {
+		final ASTNodeCommandInvocation invocation = new ASTNodeCommandInvocation(ctx.name.id.getText());
+		Stream<ASTNodeArgument> collect = ArgumentCollector.collect(ctx.arguments());
 		collect.forEach(a -> a.setParent(invocation));
 		return invocation;
 	}
 	
 	@Override
-	protected AbstractNode aggregateResult(AbstractNode aggregate, AbstractNode nextResult) {
+	protected ASTNode aggregateResult(ASTNode aggregate, ASTNode nextResult) {
 		if(aggregate != null) {
 			if(nextResult != null) {
 				nextResult.setParent(aggregate);

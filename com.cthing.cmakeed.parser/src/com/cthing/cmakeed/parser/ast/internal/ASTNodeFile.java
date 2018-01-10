@@ -7,6 +7,6 @@ package com.cthing.cmakeed.parser.ast.internal;
  * @noextend
  * @since 1.0.0
  */
-public class File extends AbstractNode {
+public class ASTNodeFile extends ASTNode {
 
 }

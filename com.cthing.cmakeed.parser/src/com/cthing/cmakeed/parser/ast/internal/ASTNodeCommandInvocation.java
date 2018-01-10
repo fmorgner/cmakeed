@@ -6,11 +6,11 @@ import java.util.List;
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeCommandInvocation;
 import com.cthing.cmakeed.parser.ast.CMakeASTNode;
 
-public class CommandInvocation extends AbstractNamedNode implements CMakeASTNodeCommandInvocation {
+public class ASTNodeCommandInvocation extends ASTNodeNamedElement implements CMakeASTNodeCommandInvocation {
 
 	private final List<CMakeASTNode> fArguments = new ArrayList<>();
 	
-	protected CommandInvocation(String name) {
+	protected ASTNodeCommandInvocation(String name) {
 		super(name);
 	}
 
@@ -20,9 +20,9 @@ public class CommandInvocation extends AbstractNamedNode implements CMakeASTNode
 	}
 
 	@Override
-	protected void add(AbstractNode abstractNode) {
+	protected void add(ASTNode abstractNode) {
 		super.add(abstractNode);
-		if(abstractNode instanceof Argument) {
+		if(abstractNode instanceof ASTNodeArgument) {
 			fArguments.add(abstractNode);
 		}
 	}
