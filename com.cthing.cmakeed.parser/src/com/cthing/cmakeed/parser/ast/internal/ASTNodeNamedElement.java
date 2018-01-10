@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeNamedElement;
 
-class ASTNodeNamedElement extends ASTNode implements CMakeASTNodeNamedElement {
+abstract class ASTNodeNamedElement extends ASTNode implements CMakeASTNodeNamedElement {
 
 	protected final String fName;
 	
