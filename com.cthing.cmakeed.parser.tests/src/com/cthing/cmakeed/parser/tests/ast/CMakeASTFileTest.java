@@ -1,12 +1,14 @@
 package com.cthing.cmakeed.parser.tests.ast;
 
+import static com.cthing.cmakeed.parser.tests.support.ReturnValue.returnValue;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Every.everyItem;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.cthing.cmakeed.parser.ast.CMakeASTNode;
@@ -30,8 +32,21 @@ public class CMakeASTFileTest extends CMakeASTTest {
 		CMakeASTNode ast = getAST();
 
 		assertThat(ast.getChildren().size(), equalTo(1));
-		assertTrue(ast.getChildren().toArray()[0] instanceof CMakeASTNodeCommandInvocation);
-		assertThat(ast.getChildren().toArray(new CMakeASTNode[1])[0].getParent(), equalTo(Optional.of(ast)));
+		assertThat(ast.getChildren(), everyItem(instanceOf(CMakeASTNodeCommandInvocation.class)));
+		assertThat(ast.getChildren(), everyItem(returnValue(CMakeASTNode::getParent, equalTo(Optional.of(ast)))));
+	}
+	
+	@Test
+	@CMakeTestCode(
+			"cmd()\n"
+			+ "cmd2()\n"
+			)
+	public void sourceFileContainingTwoCommandInvocationsWithoutArgumentsProducesFileWithTwoChildren() throws Exception {
+		CMakeASTNode ast = getAST();
+
+		assertThat(ast.getChildren().size(), equalTo(2));
+		assertThat(ast.getChildren(), everyItem(instanceOf(CMakeASTNodeCommandInvocation.class)));
+		assertThat(ast.getChildren(), everyItem(returnValue(CMakeASTNode::getParent, equalTo(Optional.of(ast)))));
 	}
 
 	@Test
@@ -40,16 +55,8 @@ public class CMakeASTFileTest extends CMakeASTTest {
 		CMakeASTNode ast = getAST();
 		
 		assertThat(ast.getChildren().size(), equalTo(1));
-		assertTrue(ast.getChildren().toArray()[0] instanceof CMakeASTNodeCommandInvocation);
+		assertThat(ast.getChildren(), everyItem(instanceOf(CMakeASTNodeCommandInvocation.class)));
+		assertThat(ast.getChildren(), everyItem(returnValue(CMakeASTNode::getParent, equalTo(Optional.of(ast)))));
 	}
 	
-	@Ignore
-	@Test
-	@CMakeTestCode("#A comment without a whitespace after the pound sign\n")
-	public void sourceFileContainigOneCommentProducesFileWithOneChild() throws Exception {
-		CMakeASTNode ast = getAST();
-		
-		assertThat(ast.getChildren().size(), equalTo(1));
-		assertTrue(ast.getChildren().toArray()[0] instanceof CMakeASTNodeCommandInvocation);
-	}
 }
