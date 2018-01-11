@@ -12,7 +12,6 @@ file_element : command_invocation line_comment? # FileElement
              | bracket_comment line_comment?    # FileElement
              | WS* line_comment?                # FileElement
              ;
-// line_ending  : line_comment? NEWLINE # LineEnding ;
 
 /**
  * Command Invocations
