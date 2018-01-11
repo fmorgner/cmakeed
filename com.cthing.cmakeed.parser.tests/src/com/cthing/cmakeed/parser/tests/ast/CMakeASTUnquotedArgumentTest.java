@@ -143,4 +143,13 @@ public class CMakeASTUnquotedArgumentTest extends CMakeASTTest {
 		
 		assertSingleArgumentWithValue(ast, "ARGUMENT\tESCAPED");
 	}
+	
+	@Test
+	@CMakeTestCode("cmd(${VAR})")
+	public void unquotedArgumentConsistingOfVariableReference() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT\tESCAPED");
+	}
+	
 }
