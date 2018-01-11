@@ -18,15 +18,17 @@ import com.cthing.cmakeed.parser.tests.CMakeTestCode;
 
 public class CMakeASTUnquotedArgumentTest extends CMakeASTTest {
 
-	private static CMakeASTNodeArgument getFirstArgument(CMakeASTNode ast) {
-		return getAllArguments(ast).get(0);
-	}
-	
+
 	private static List<CMakeASTNodeArgument> getAllArguments(CMakeASTNode ast) {
 		CMakeASTNodeCommandInvocation invocation = (CMakeASTNodeCommandInvocation) ast.getChild(0).get();
 		ArrayList<CMakeASTNodeArgument> list = new ArrayList<CMakeASTNodeArgument>();
 		invocation.getArguments().forEach(list::add);
 		return list;
+	}
+	
+	private static void assertSingleArgumentWithValue(CMakeASTNode ast, String value) throws Exception {
+		assertThat(getAllArguments(ast).size(), equalTo(1));
+		assertThat(getAllArguments(ast), everyItem(returnValue(CMakeASTNodeArgument::getValue, equalTo(value))));
 	}
 	
 	@Test
@@ -42,8 +44,103 @@ public class CMakeASTUnquotedArgumentTest extends CMakeASTTest {
 	@CMakeTestCode("cmd(ARGUMENT\\;SEMICOLON)")
 	public void unquotedArgumentWithEscapedSemicolonIsConsideredAsOneArgument() throws Exception {
 		CMakeASTNode ast = getAST();
-		CMakeASTNodeArgument argument = getFirstArgument(ast);
+
+		assertSingleArgumentWithValue(ast, "ARGUMENT;SEMICOLON");
+	}
+	
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\(ESCAPED)")
+	public void unquotedArgumentWithEscapedIdentityLeftParenthesisIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
 		
-		assertThat(argument.getValue(), equalTo("ARGUMENT;SEMICOLON"));
+		assertSingleArgumentWithValue(ast, "ARGUMENT(ESCAPED");
+	}
+	
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\)ESCAPED)")
+	public void unquotedArgumentWithEscapedIdentityRightParenthesisIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT)ESCAPED");
+	}
+	
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\#ESCAPED)")
+	public void unquotedArgumentWithEscapedIdentityPoundIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT#ESCAPED");
+	}
+	
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\\"ESCAPED)")
+	public void unquotedArgumentWithEscapedIdentityDoubleQuoteIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT\"ESCAPED");
+	}
+	
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\ ESCAPED)")
+	public void unquotedArgumentWithEscapedIdentitySpaceIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT ESCAPED");
+	}
+	
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\\\ESCAPED)")
+	public void unquotedArgumentWithEscapedIdentityBackslashIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT\\ESCAPED");
+	}
+	
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\$ESCAPED)")
+	public void unquotedArgumentWithEscapedIdentityDollarIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT$ESCAPED");
+	}
+	
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\@ESCAPED)")
+	public void unquotedArgumentWithEscapedIdentityAtIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT@ESCAPED");
+	}
+	
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\^ESCAPED)")
+	public void unquotedArgumentWithEscapedIdentityCarretIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT^ESCAPED");
+	}
+
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\rESCAPED)")
+	public void unquotedArgumentWithEscapedEncodedCarriageReturnIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT\rESCAPED");
+	}
+
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\nESCAPED)")
+	public void unquotedArgumentWithEscapedEncodedNewlineIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT\nESCAPED");
+	}
+
+	@Test
+	@CMakeTestCode("cmd(ARGUMENT\\tESCAPED)")
+	public void unquotedArgumentWithEscapedEncodedTabIsConsideredAsOneArgument() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertSingleArgumentWithValue(ast, "ARGUMENT\tESCAPED");
 	}
 }

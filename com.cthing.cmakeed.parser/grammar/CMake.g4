@@ -55,9 +55,9 @@ unquoted_element  : variable_reference                      # UnquotedElement
 /**
  * Escape Sequences
  */
-escape_sequence  : '\\' ('('|')'|'#'|'"'|' '|'\\'|'$'|'@'|'^') # EscapeIdentity
-                 | ('\\t'|'\\r'|'\\n')                         # EscapeEncoded
-                 | '\\;'                                       # EscapeSemicolon
+escape_sequence  : ('\\('|'\\)'|'\\#'|'\\"'|'\\ '|'\\\\'|'\\$'|'\\@'|'\\^') # EscapeIdentity
+                 | ('\\t'|'\\r'|'\\n')                                      # EscapeEncoded
+                 | '\\;'                                                    # EscapeSemicolon
                  ;
 
 /**

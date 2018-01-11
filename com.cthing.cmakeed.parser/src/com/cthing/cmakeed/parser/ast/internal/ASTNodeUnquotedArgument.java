@@ -8,11 +8,35 @@ public class ASTNodeUnquotedArgument extends ASTNodeArgument {
 		super(context);
 		
 		String value = context.getText();
+		StringBuilder builder = new StringBuilder();
+
+		for(int pos = 0; pos < value.length(); ++pos) {
+			char c = value.charAt(pos);
+			
+			if(value.charAt(pos) == '\\') {
+				c = value.charAt(++pos);
+				if("()#\\\" $@^;".contains("" + c)) {
+					builder.append(c);
+				} else {
+					switch(c) {
+					case 'r':
+						builder.append('\r');
+						break;
+					case 'n':
+						builder.append('\n');
+						break;
+					case 't':
+						builder.append('\t');
+						break;
+					}
+				}
+				continue;
+			}
+			
+			builder.append(value.charAt(pos));
+		}
 		
-		value = value.replaceAll("\\\\r", "\r");
-		value = value.replaceAll("\\\\n", "\n");
-		value = value.replaceAll("\\\\t", "\t");
-		fValue = value.replaceAll("\\\\", "");
+		fValue = builder.toString();
 	}
 
 }
