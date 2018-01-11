@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cthing.cmakeed.parser.ast.CMakeASTNode;
+import com.cthing.cmakeed.parser.ast.CMakeASTNodeArgument;
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeCommandInvocation;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.CommandInvocationContext;
 
 public class ASTNodeCommandInvocation extends ASTNodeNamedElement implements CMakeASTNodeCommandInvocation {
 
-	private final List<CMakeASTNode> fArguments = new ArrayList<>();
+	private final List<CMakeASTNodeArgument> fArguments = new ArrayList<>();
 	
 	protected ASTNodeCommandInvocation(CommandInvocationContext context) {
 		super(context);
@@ -17,7 +18,7 @@ public class ASTNodeCommandInvocation extends ASTNodeNamedElement implements CMa
 	}
 
 	@Override
-	public Iterable<CMakeASTNode> getArguments() {
+	public Iterable<CMakeASTNodeArgument> getArguments() {
 		return fArguments;
 	}
 
@@ -25,7 +26,7 @@ public class ASTNodeCommandInvocation extends ASTNodeNamedElement implements CMa
 	protected void add(ASTNode abstractNode) {
 		super.add(abstractNode);
 		if(abstractNode instanceof ASTNodeArgument) {
-			fArguments.add(abstractNode);
+			fArguments.add((CMakeASTNodeArgument) abstractNode);
 		}
 	}
 

@@ -46,18 +46,18 @@ quoted_element      : (escape_sequence|variable_reference|'\\' NEWLINE|~('\\'|'"
  * 
  * TODO: implement 'unquoted_legacy'
  */
-unquoted_argument : elements=unquoted_element+ # UnquotedArgument ;
-unquoted_element  : variable_reference                  # UnquotedElement
-                  | escape_sequence                     # UnquotedElement
-                  | ~(WS|'('|')'|'#'|'"'|'\\'|NEWLINE)+ # UnquotedElement
+unquoted_argument : elements=unquoted_element ((';'|WS) unquoted_element)* # UnquotedArgument ;
+unquoted_element  : variable_reference                      # UnquotedElement
+                  | escape_sequence                         # UnquotedElement
+                  | ~(WS|'('|')'|'#'|'"'|'\\'|';'|NEWLINE)+ # UnquotedElement
                   ;
 
 /**
  * Escape Sequences
  */
-escape_sequence  : '\\' ~(ALPHANUM|';') # EscapeIdentity
-                 | ('\\t'|'\\r'|'\\n') # EscapeEncoded
-                 | '\\;' # EscapeSemicolon
+escape_sequence  : '\\' ('('|')'|'#'|'"'|' '|'\\'|'$'|'@'|'^') # EscapeIdentity
+                 | ('\\t'|'\\r'|'\\n')                         # EscapeEncoded
+                 | '\\;'                                       # EscapeSemicolon
                  ;
 
 /**

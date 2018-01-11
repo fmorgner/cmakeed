@@ -24,6 +24,6 @@ public interface CMakeASTNodeCommandInvocation extends CMakeASTNodeNamedElement 
 	 *         arguments.
 	 * @since 1.0.0
 	 */
-	Iterable<CMakeASTNode> getArguments();
+	Iterable<CMakeASTNodeArgument> getArguments();
 
 }

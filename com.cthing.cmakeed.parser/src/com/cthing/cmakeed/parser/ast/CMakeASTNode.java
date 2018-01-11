@@ -29,6 +29,18 @@ public interface CMakeASTNode {
 	Collection<CMakeASTNode> getChildren();
 
 	/**
+	 * Retrieve the child at the specified (0-based) index
+	 * 
+	 * @note Indices run from left to right in the tree
+	 * 
+	 * @param index
+	 *            The index of the child
+	 * @return An {@link Optional} containing the child at the specified index iff.
+	 *         it exists, an empty {@link Optional} otherwise.
+	 */
+	Optional<CMakeASTNode> getChild(int index);
+
+	/**
 	 * Retrieve the parent node of this node
 	 * 
 	 * @return An {@link Optional} containing the parent of this node iff. this node
@@ -45,10 +57,10 @@ public interface CMakeASTNode {
 	 * @since 1.0.0
 	 */
 	boolean accept(CMakeASTVisitor visitor);
-	
+
 	int getLineNumber();
-	
+
 	int getStartIndex();
-	
+
 	int getStopIndex();
 }

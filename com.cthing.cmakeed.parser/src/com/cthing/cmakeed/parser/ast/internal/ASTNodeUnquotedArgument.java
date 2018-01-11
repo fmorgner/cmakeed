@@ -6,7 +6,13 @@ public class ASTNodeUnquotedArgument extends ASTNodeArgument {
 
 	protected ASTNodeUnquotedArgument(Unquoted_elementContext context) {
 		super(context);
-		fValue = context.getText();
+		
+		String value = context.getText();
+		
+		value = value.replaceAll("\\\\r", "\r");
+		value = value.replaceAll("\\\\n", "\n");
+		value = value.replaceAll("\\\\t", "\t");
+		fValue = value.replaceAll("\\\\", "");
 	}
 
 }

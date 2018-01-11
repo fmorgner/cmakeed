@@ -33,6 +33,16 @@ abstract class ASTNode implements CMakeASTNode {
 	}
 
 	@Override
+	public Optional<CMakeASTNode> getChild(int index) {
+		assert(index >= 0);
+		if(fChildren.size() > index) {
+			return Optional.of(fChildren.get(index));
+		}
+		
+		return Optional.empty();
+	}
+	
+	@Override
 	public Optional<CMakeASTNode> getParent() {
 		return fParent;
 	}

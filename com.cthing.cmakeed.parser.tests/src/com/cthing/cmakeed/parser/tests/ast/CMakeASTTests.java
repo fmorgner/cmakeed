@@ -6,7 +6,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	CMakeASTFileTest.class
+	CMakeASTFileTest.class,
+	CMakeASTUnquotedArgumentTest.class,
 })
 public class CMakeASTTests {
 
