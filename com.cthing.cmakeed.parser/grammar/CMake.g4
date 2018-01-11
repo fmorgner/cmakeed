@@ -7,10 +7,10 @@ package com.cthing.cmakeed.parser.llparser;
 /**
  * Source Files
  */
-file         : file_element* ;
-file_element : command_invocation line_comment? NEWLINE # FileElement
-             | bracket_comment line_comment? NEWLINE    # FileElement
-             | WS* line_comment? NEWLINE                # FileElement
+file         : file_element (NEWLINE file_element)* EOF;
+file_element : command_invocation line_comment? # FileElement
+             | bracket_comment line_comment?    # FileElement
+             | WS* line_comment?                # FileElement
              ;
 // line_ending  : line_comment? NEWLINE # LineEnding ;
 
@@ -85,3 +85,4 @@ NEWLINE  : '\r'? '\n' ;
 ALPHA    : [A-Za-z_] ;
 ALPHANUM : [A-Za-z0-9_] ;
 ID       : ALPHA ALPHANUM+ ;
+LINEEND  : (NEWLINE | EOF) ;

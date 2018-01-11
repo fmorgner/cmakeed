@@ -27,7 +27,7 @@ public class CMakeASTFileTest extends CMakeASTTest {
 	}
 
 	@Test
-	@CMakeTestCode("cmd()\n")
+	@CMakeTestCode("cmd()")
 	public void sourceFileContainingOneCommandInvocationWithoutArgumentsProducesFileWithOneChild() throws Exception {
 		CMakeASTNode ast = getAST();
 
@@ -39,7 +39,7 @@ public class CMakeASTFileTest extends CMakeASTTest {
 	@Test
 	@CMakeTestCode(
 			"cmd()\n"
-			+ "cmd2()\n"
+			+ "cmd2()"
 			)
 	public void sourceFileContainingTwoCommandInvocationsWithoutArgumentsProducesFileWithTwoChildren() throws Exception {
 		CMakeASTNode ast = getAST();
@@ -50,7 +50,7 @@ public class CMakeASTFileTest extends CMakeASTTest {
 	}
 
 	@Test
-	@CMakeTestCode("cmd(SOME UNQUOTED ARGUMENTS)\n")
+	@CMakeTestCode("cmd(SOME UNQUOTED ARGUMENTS)")
 	public void sourceFileContainingOneCommandInvocationWithArgumentsProducesFileWithOneChild() throws Exception {
 		CMakeASTNode ast = getAST();
 		
