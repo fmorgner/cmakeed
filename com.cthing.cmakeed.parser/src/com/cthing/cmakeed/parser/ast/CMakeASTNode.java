@@ -37,6 +37,7 @@ public interface CMakeASTNode {
 	 *            The index of the child
 	 * @return An {@link Optional} containing the child at the specified index iff.
 	 *         it exists, an empty {@link Optional} otherwise.
+	 * @since 1.0.0
 	 */
 	Optional<CMakeASTNode> getChild(int index);
 
@@ -58,9 +59,24 @@ public interface CMakeASTNode {
 	 */
 	boolean accept(CMakeASTVisitor visitor);
 
+	/**
+	 * Retrieve the (1-based) line number where the first token of this node starts 
+	 * 
+	 * @since 1.0.0
+	 */
 	int getLineNumber();
 
+	/**
+	 * Retrieve the (0-based) character index where the first token of this node starts
+	 * 
+	 * @since 1.0.0
+	 */
 	int getStartIndex();
 
+	/**
+	 * Retrieve the (0-based) character index where the last token of this node ends
+	 * 
+	 * @since 1.0.0
+	 */
 	int getStopIndex();
 }
