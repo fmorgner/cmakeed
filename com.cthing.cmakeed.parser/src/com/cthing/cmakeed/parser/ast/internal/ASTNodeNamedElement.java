@@ -1,15 +1,15 @@
 package com.cthing.cmakeed.parser.ast.internal;
 
-import java.util.Objects;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeNamedElement;
 
 abstract class ASTNodeNamedElement extends ASTNode implements CMakeASTNodeNamedElement {
 
-	protected final String fName;
+	protected String fName;
 	
-	protected ASTNodeNamedElement(String name) {
-		fName = Objects.requireNonNull(name);
+	protected ASTNodeNamedElement(ParserRuleContext context) {
+		super(context);
 	}
 	
 	@Override

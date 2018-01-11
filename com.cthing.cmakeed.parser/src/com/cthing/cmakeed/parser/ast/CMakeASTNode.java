@@ -45,4 +45,10 @@ public interface CMakeASTNode {
 	 * @since 1.0.0
 	 */
 	boolean accept(CMakeASTVisitor visitor);
+	
+	int getLineNumber();
+	
+	int getStartIndex();
+	
+	int getStopIndex();
 }

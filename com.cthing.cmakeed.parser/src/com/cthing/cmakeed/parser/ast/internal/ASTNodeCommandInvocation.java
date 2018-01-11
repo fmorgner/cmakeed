@@ -3,15 +3,17 @@ package com.cthing.cmakeed.parser.ast.internal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cthing.cmakeed.parser.ast.CMakeASTNodeCommandInvocation;
 import com.cthing.cmakeed.parser.ast.CMakeASTNode;
+import com.cthing.cmakeed.parser.ast.CMakeASTNodeCommandInvocation;
+import com.cthing.cmakeed.parser.llparser.CMakeParser.CommandInvocationContext;
 
 public class ASTNodeCommandInvocation extends ASTNodeNamedElement implements CMakeASTNodeCommandInvocation {
 
 	private final List<CMakeASTNode> fArguments = new ArrayList<>();
 	
-	protected ASTNodeCommandInvocation(String name) {
-		super(name);
+	protected ASTNodeCommandInvocation(CommandInvocationContext context) {
+		super(context);
+		fName = context.name.getText();
 	}
 
 	@Override

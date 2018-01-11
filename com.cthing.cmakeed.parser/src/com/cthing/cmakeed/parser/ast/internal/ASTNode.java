@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.antlr.v4.runtime.ParserRuleContext;
+
 import com.cthing.cmakeed.parser.ast.CMakeASTNode;
 import com.cthing.cmakeed.parser.ast.CMakeASTVisitor;
 import com.cthing.cmakeed.parser.ast.CMakeASTVisitor.Decision;
@@ -14,7 +16,17 @@ abstract class ASTNode implements CMakeASTNode {
 
 	protected final List<CMakeASTNode> fChildren = new ArrayList<>();
 	protected Optional<CMakeASTNode> fParent = Optional.empty();
+	
+	private final int fLine;
+	private final int fStart;
+	private final int fStop;
 
+	protected ASTNode(ParserRuleContext context) {
+		fLine = context.getStart().getLine();
+		fStart = context.getStart().getStartIndex();
+		fStop = context.getStop().getStopIndex();
+	}
+	
 	@Override
 	public Collection<CMakeASTNode> getChildren() {
 		return fChildren;
@@ -50,6 +62,21 @@ abstract class ASTNode implements CMakeASTNode {
 
 	protected void add(ASTNode abstractNode) {
 		fChildren.add(abstractNode);
+	}
+	
+	@Override
+	public int getLineNumber() {
+		return fLine;
+	}
+	
+	@Override
+	public int getStartIndex() {
+		return fStart;
+	}
+	
+	@Override
+	public int getStopIndex() {
+		return fStop;
 	}
 
 }

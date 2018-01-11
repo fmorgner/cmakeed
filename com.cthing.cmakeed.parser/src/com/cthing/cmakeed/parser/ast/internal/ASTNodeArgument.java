@@ -1,14 +1,16 @@
 package com.cthing.cmakeed.parser.ast.internal;
 
+import org.antlr.v4.runtime.ParserRuleContext;
+
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeArgument;
 
-public class ASTNodeArgument extends ASTNode implements CMakeASTNodeArgument {
+public abstract class ASTNodeArgument extends ASTNode implements CMakeASTNodeArgument {
 
-	private final String fValue;
-	
-	ASTNodeArgument(String value) {
-		fValue = value;
+	protected ASTNodeArgument(ParserRuleContext context) {
+		super(context);
 	}
+
+	protected String fValue = null;
 	
 	@Override
 	public String getValue() {

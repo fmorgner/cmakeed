@@ -14,7 +14,6 @@ import com.cthing.cmakeed.parser.llparser.CMakeParser.ArgumentsContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.CommandInvocationContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.FileContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.UnquotedArgumentContext;
-import com.cthing.cmakeed.parser.llparser.CMakeParser.Unquoted_elementContext;
 
 public class ASTBuilder extends CMakeBaseVisitor<ASTNode> {
 
@@ -56,8 +55,7 @@ public class ASTBuilder extends CMakeBaseVisitor<ASTNode> {
 		@Override
 		public Void visitUnquotedArgument(UnquotedArgumentContext ctx) {
 			ctx.unquoted_element().stream()
-				.map(Unquoted_elementContext::getText)
-				.map(ASTNodeArgument::new)
+				.map(ASTNodeUnquotedArgument::new)
 				.forEach(arguments::add);
 			return null;
 		}
@@ -72,7 +70,7 @@ public class ASTBuilder extends CMakeBaseVisitor<ASTNode> {
 	
 	@Override
 	public ASTNode visitFile(FileContext ctx) {
-		ASTNodeFile file = new ASTNodeFile();
+		ASTNodeFile file = new ASTNodeFile(ctx);
 		fParentStack.push(file);
 
 		ctx.file_element().stream()
@@ -86,7 +84,7 @@ public class ASTBuilder extends CMakeBaseVisitor<ASTNode> {
 
 	@Override
 	public ASTNode visitCommandInvocation(CommandInvocationContext ctx) {
-		final ASTNodeCommandInvocation invocation = new ASTNodeCommandInvocation(ctx.name.id.getText());
+		final ASTNodeCommandInvocation invocation = new ASTNodeCommandInvocation(ctx);
 		handleArguments(ctx, invocation);
 		handleCommandBlock(invocation);
 		return invocation;
