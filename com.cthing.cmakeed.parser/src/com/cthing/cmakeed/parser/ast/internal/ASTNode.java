@@ -17,11 +17,14 @@ abstract class ASTNode implements CMakeASTNode {
 	protected final List<CMakeASTNode> fChildren = new ArrayList<>();
 	protected Optional<CMakeASTNode> fParent = Optional.empty();
 	
+	private final String fRawSyntax;
 	private final int fLine;
 	private final int fStart;
 	private final int fStop;
 
 	protected ASTNode(ParserRuleContext context) {
+		fRawSyntax = context.getText();
+		
 		fLine = context.getStart().getLine();
 		fStart = context.getStart().getStartIndex();
 		fStop = context.getStop().getStopIndex();
@@ -72,6 +75,11 @@ abstract class ASTNode implements CMakeASTNode {
 
 	protected void add(ASTNode abstractNode) {
 		fChildren.add(abstractNode);
+	}
+
+	@Override
+	public String getRawSyntax() {
+		return fRawSyntax;
 	}
 	
 	@Override

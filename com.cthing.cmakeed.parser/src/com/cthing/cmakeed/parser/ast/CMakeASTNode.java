@@ -60,6 +60,13 @@ public interface CMakeASTNode {
 	boolean accept(CMakeASTVisitor visitor);
 
 	/**
+	 * Retrieve the raw syntax (as-is from the input) of this node
+	 * 
+	 * @since 1.0.0
+	 */
+	String getRawSyntax();
+	
+	/**
 	 * Retrieve the (1-based) line number where the first token of this node starts 
 	 * 
 	 * @since 1.0.0
