@@ -78,5 +78,5 @@ public interface CMakeASTNode {
 	 * 
 	 * @since 1.0.0
 	 */
-	int getStopIndex();
+	int getEndIndex();
 }

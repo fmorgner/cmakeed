@@ -85,7 +85,7 @@ abstract class ASTNode implements CMakeASTNode {
 	}
 	
 	@Override
-	public int getStopIndex() {
+	public int getEndIndex() {
 		return fStop;
 	}
 
