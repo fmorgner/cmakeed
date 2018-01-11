@@ -17,4 +17,8 @@ abstract class ASTNodeNamedElement extends ASTNode implements CMakeASTNodeNamedE
 		return fName;
 	}
 
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

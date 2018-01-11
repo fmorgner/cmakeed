@@ -41,12 +41,15 @@ abstract class ASTNode implements CMakeASTNode {
 	}
 
 	protected ASTNode setParent(ASTNode parent) {
-		fParent = Optional.of(parent);
-		parent.add(this);
+		if(!(parent == this)) {
+			fParent = Optional.of(parent);
+			parent.add(this);
+		}
 		return this;
 	}
 
 	protected void add(ASTNode abstractNode) {
 		fChildren.add(abstractNode);
 	}
+
 }

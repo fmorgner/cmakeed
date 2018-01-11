@@ -58,5 +58,18 @@ public class CMakeASTFileTest extends CMakeASTTest {
 		assertThat(ast.getChildren(), everyItem(instanceOf(CMakeASTNodeCommandInvocation.class)));
 		assertThat(ast.getChildren(), everyItem(returnValue(CMakeASTNode::getParent, equalTo(Optional.of(ast)))));
 	}
-	
+
+	@Test
+	@CMakeTestCode(
+			"function(FUN)\n"
+			+ "cmd(HELLO)\n"
+			+ "endfunction()")
+	public void sourceFileContainingOneFunctionDefinitionProducesFileWithTwoChildren() throws Exception {
+		CMakeASTNode ast = getAST();
+		
+		assertThat(ast.getChildren().size(), equalTo(2));
+		assertThat(ast.getChildren(), everyItem(instanceOf(CMakeASTNodeCommandInvocation.class)));
+		assertThat(ast.getChildren(), everyItem(returnValue(CMakeASTNode::getParent, equalTo(Optional.of(ast)))));
+	}
+
 }

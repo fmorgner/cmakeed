@@ -26,5 +26,19 @@ public class ASTNodeCommandInvocation extends ASTNodeNamedElement implements CMa
 			fArguments.add(abstractNode);
 		}
 	}
-	
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder(getName() + "(");
+		boolean first = true;
+		for(CMakeASTNode argument : fArguments) {
+			if(!first) {
+				builder.append(' ');
+			}
+			builder.append(argument);
+			first = false;
+		}
+		builder.append(")");
+		return builder.toString();
+	}
 }
