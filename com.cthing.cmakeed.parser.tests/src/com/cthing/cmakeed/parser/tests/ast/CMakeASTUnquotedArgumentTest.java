@@ -1,6 +1,7 @@
 package com.cthing.cmakeed.parser.tests.ast;
 
 import static com.cthing.cmakeed.parser.tests.support.ReturnValue.returnValue;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Every.everyItem;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import com.cthing.cmakeed.parser.ast.CMakeASTNode;
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeArgument;
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeCommandInvocation;
+import com.cthing.cmakeed.parser.ast.CMakeASTNodeVariableReference;
 import com.cthing.cmakeed.parser.tests.CMakeTestCode;
 
 public class CMakeASTUnquotedArgumentTest extends CMakeASTTest {
@@ -26,9 +28,11 @@ public class CMakeASTUnquotedArgumentTest extends CMakeASTTest {
 		return list;
 	}
 	
-	private static void assertSingleArgumentWithValue(CMakeASTNode ast, String value) throws Exception {
-		assertThat(getAllArguments(ast).size(), equalTo(1));
-		assertThat(getAllArguments(ast), everyItem(returnValue(CMakeASTNodeArgument::getValue, equalTo(value))));
+	private static CMakeASTNodeArgument assertSingleArgumentWithValue(CMakeASTNode ast, String value) throws Exception {
+		final List<CMakeASTNodeArgument> arguments = getAllArguments(ast);
+		assertThat(arguments.size(), equalTo(1));
+		assertThat(arguments, everyItem(returnValue(CMakeASTNodeArgument::getValue, equalTo(value))));
+		return arguments.get(0);
 	}
 	
 	@Test
@@ -149,7 +153,9 @@ public class CMakeASTUnquotedArgumentTest extends CMakeASTTest {
 	public void unquotedArgumentConsistingOfVariableReference() throws Exception {
 		CMakeASTNode ast = getAST();
 		
-		assertSingleArgumentWithValue(ast, "ARGUMENT\tESCAPED");
+		CMakeASTNodeArgument argument = assertSingleArgumentWithValue(ast, "${VAR}");
+		assertThat(argument.getChildren().size(), equalTo(1));
+		assertThat(argument.getChildren(), everyItem(instanceOf(CMakeASTNodeVariableReference.class)));
 	}
 	
 }
