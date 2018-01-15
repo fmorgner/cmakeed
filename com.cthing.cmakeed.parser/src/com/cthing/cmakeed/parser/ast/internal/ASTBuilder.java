@@ -6,13 +6,20 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
+
+import org.antlr.v4.runtime.ParserRuleContext;
 
 import com.cthing.cmakeed.parser.CMakeParserError;
 import com.cthing.cmakeed.parser.llparser.CMakeBaseVisitor;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.ArgumentsContext;
+import com.cthing.cmakeed.parser.llparser.CMakeParser.BracketArgumentContext;
+import com.cthing.cmakeed.parser.llparser.CMakeParser.BracketedContentContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.CommandInvocationContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.FileContext;
+import com.cthing.cmakeed.parser.llparser.CMakeParser.QuotedArgumentContext;
+import com.cthing.cmakeed.parser.llparser.CMakeParser.QuotedElementContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.UnquotedArgumentContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.UnquotedElementContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.VariableReferenceContext;
@@ -54,12 +61,27 @@ public class ASTBuilder extends CMakeBaseVisitor<ASTNode> {
 		
 		private final List<ASTNodeArgument> arguments = new ArrayList<>();
 		
-		@Override
-		public Void visitUnquotedArgument(UnquotedArgumentContext ctx) {
-			ctx.getRuleContexts(UnquotedElementContext.class).stream()
-				.map(ASTNodeUnquotedArgument::new)
+		private  <T extends ParserRuleContext, N extends ASTNodeArgument> Void handleArgumentContextType(ParserRuleContext context,
+				Class<? extends T> innerContextType, Function<T, N> constructor) {
+			context.getRuleContexts(innerContextType).stream()
+				.map(constructor::apply)
 				.forEach(arguments::add);
 			return null;
+		}
+		
+		@Override
+		public Void visitUnquotedArgument(UnquotedArgumentContext ctx) {
+			return handleArgumentContextType(ctx, UnquotedElementContext.class, ASTNodeUnquotedArgument::new);
+		}
+		
+		@Override
+		public Void visitQuotedArgument(QuotedArgumentContext ctx) {
+			return handleArgumentContextType(ctx, QuotedElementContext.class, ASTNodeQuotedArgument::new);
+		}
+		
+		@Override
+		public Void visitBracketArgument(BracketArgumentContext ctx) {
+			return handleArgumentContextType(ctx, BracketedContentContext.class, ASTNodeBracketArgument::new);
 		}
 		
 		public static Stream<ASTNodeArgument> collect(ArgumentsContext ctx) {
