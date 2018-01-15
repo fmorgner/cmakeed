@@ -7,6 +7,11 @@ public class ASTNodeVariableReference extends ASTNodeNamedElement implements CMa
 
 	protected ASTNodeVariableReference(VariableReferenceContext context) {
 		super(context);
+		this.fName = context.variable_name().getText();
+		
+		context.getRuleContexts(VariableReferenceContext.class).stream()
+			.map(ASTNodeVariableReference::new)
+			.forEach(v -> v.setParent(this));
 	}
 
 }

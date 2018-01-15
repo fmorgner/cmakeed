@@ -46,7 +46,7 @@ quoted_element      : (escape_sequence|variable_reference|'\\' NEWLINE|~('\\'|'"
  * 
  * TODO: implement 'unquoted_legacy'
  */
-unquoted_argument : elements=unquoted_element ((';'|WS) unquoted_element)* # UnquotedArgument ;
+unquoted_argument : unquoted_element ((';'|WS) unquoted_element)* # UnquotedArgument ;
 unquoted_element  : variable_reference                      # UnquotedElement
                   | escape_sequence                         # UnquotedElement
                   | ~(WS|'('|')'|'#'|'"'|'\\'|';'|NEWLINE)+ # UnquotedElement

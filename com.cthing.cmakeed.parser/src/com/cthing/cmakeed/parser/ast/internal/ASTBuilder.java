@@ -14,6 +14,7 @@ import com.cthing.cmakeed.parser.llparser.CMakeParser.ArgumentsContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.CommandInvocationContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.FileContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.UnquotedArgumentContext;
+import com.cthing.cmakeed.parser.llparser.CMakeParser.UnquotedElementContext;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.VariableReferenceContext;
 
 public class ASTBuilder extends CMakeBaseVisitor<ASTNode> {
@@ -55,7 +56,7 @@ public class ASTBuilder extends CMakeBaseVisitor<ASTNode> {
 		
 		@Override
 		public Void visitUnquotedArgument(UnquotedArgumentContext ctx) {
-			ctx.unquoted_element().stream()
+			ctx.getRuleContexts(UnquotedElementContext.class).stream()
 				.map(ASTNodeUnquotedArgument::new)
 				.forEach(arguments::add);
 			return null;
