@@ -19,48 +19,55 @@ import com.cthing.cmakeed.parser.tests.CMakeTestCode;
 
 public class CMakeASTVisitorOrderTest extends CMakeASTTest {
 
+	private static final String MARKER_COMMAND_INVOCATION = ":ci:";
+	private static final String MARKER_BRACKET_ARGUMENT = ":ba:";
+	private static final String MARKER_VARIABLE_REFERENCE = ":vr:";
+	private static final String MARKER_UNQUOTED_ARGUMENT = ":ua:";
+	private static final String MARKER_QUOTED_ARGUMENT = ":qa:";
+	private static final String MARKER_FILE = ":f:";
+
 	private TraversalRecorder fRecoder = null;
-	
+
 	private class TraversalRecorder implements CMakeASTVisitor {
 		private final StringBuilder fBuffer = new StringBuilder();
-		
+
 		public String getTraversal() {
 			return fBuffer.toString();
 		}
 
 		@Override
 		public Decision visit(CMakeASTNodeBracketArgument argument) {
-			fBuffer.append(":ba:");
+			fBuffer.append(MARKER_BRACKET_ARGUMENT);
 			return CMakeASTVisitor.super.visit(argument);
 		}
 
 		@Override
 		public Decision visit(CMakeASTNodeCommandInvocation argument) {
-			fBuffer.append(":ci:");
+			fBuffer.append(MARKER_COMMAND_INVOCATION);
 			return CMakeASTVisitor.super.visit(argument);
 		}
-		
+
 		@Override
 		public Decision visit(CMakeASTNodeFile file) {
-			fBuffer.append(":f:");
+			fBuffer.append(MARKER_FILE);
 			return CMakeASTVisitor.super.visit(file);
 		}
-		
+
 		@Override
 		public Decision visit(CMakeASTNodeQuotedArgument argument) {
-			fBuffer.append(":qa:");
+			fBuffer.append(MARKER_QUOTED_ARGUMENT);
 			return CMakeASTVisitor.super.visit(argument);
 		}
-		
+
 		@Override
 		public Decision visit(CMakeASTNodeUnquotedArgument argument) {
-			fBuffer.append(":ua:");
+			fBuffer.append(MARKER_UNQUOTED_ARGUMENT);
 			return CMakeASTVisitor.super.visit(argument);
 		}
-		
+
 		@Override
 		public Decision visit(CMakeASTNodeVariableReference variable) {
-			fBuffer.append(":vr:");
+			fBuffer.append(MARKER_VARIABLE_REFERENCE);
 			return CMakeASTVisitor.super.visit(variable);
 		}
 	}
@@ -69,14 +76,23 @@ public class CMakeASTVisitorOrderTest extends CMakeASTTest {
 	public void setUp() {
 		fRecoder = new TraversalRecorder();
 	}
-	
+
 	@Test
 	@CMakeTestCode("")
-	public void visitingAnEmptyFileOnlyCallsTheFileVisitMethod() throws Exception {
+	public void visitingAnEmptyFileVisitsFile() throws Exception {
 		CMakeASTNode ast = getAST().get();
 		ast.accept(fRecoder);
 
-		assertThat(fRecoder.getTraversal(), equalTo(":f:"));
+		assertThat(fRecoder.getTraversal(), equalTo(MARKER_FILE));
 	}
 	
+	@Test
+	@CMakeTestCode("cmd()")
+	public void visitingAnEmptyCommandInvocationVisitsFileThenCommandInvocation() throws Exception {
+		CMakeASTNode ast = getAST().get();
+		ast.accept(fRecoder);
+
+		assertThat(fRecoder.getTraversal(), equalTo(MARKER_FILE + MARKER_COMMAND_INVOCATION));
+	}
+
 }
