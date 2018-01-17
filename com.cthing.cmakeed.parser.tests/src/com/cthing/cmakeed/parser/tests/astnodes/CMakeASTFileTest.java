@@ -1,4 +1,4 @@
-package com.cthing.cmakeed.parser.tests.ast;
+package com.cthing.cmakeed.parser.tests.astnodes;
 
 import static com.cthing.cmakeed.parser.tests.support.ReturnValue.returnValue;
 import static org.hamcrest.CoreMatchers.instanceOf;

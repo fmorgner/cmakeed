@@ -1,4 +1,4 @@
-package com.cthing.cmakeed.parser.tests.ast;
+package com.cthing.cmakeed.parser.tests.astnodes;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
