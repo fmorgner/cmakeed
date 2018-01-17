@@ -9,6 +9,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	CMakeASTFileTest.class,
 	CMakeASTUnquotedArgumentTest.class,
 })
-public class CMakeASTTests {
+public class AllTests {
 
 }

@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.cthing.cmakeed.parser.ast.CMakeASTNode;
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeCommandInvocation;
+import com.cthing.cmakeed.parser.tests.CMakeASTTest;
 import com.cthing.cmakeed.parser.tests.CMakeTestCode;
 
 public class CMakeASTFileTest extends CMakeASTTest {

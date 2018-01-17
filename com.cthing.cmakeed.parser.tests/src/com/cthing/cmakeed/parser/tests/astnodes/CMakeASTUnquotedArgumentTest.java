@@ -16,6 +16,7 @@ import com.cthing.cmakeed.parser.ast.CMakeASTNode;
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeArgument;
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeCommandInvocation;
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeVariableReference;
+import com.cthing.cmakeed.parser.tests.CMakeASTTest;
 import com.cthing.cmakeed.parser.tests.CMakeTestCode;
 
 public class CMakeASTUnquotedArgumentTest extends CMakeASTTest {

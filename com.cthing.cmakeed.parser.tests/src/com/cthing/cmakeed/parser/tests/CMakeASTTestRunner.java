@@ -1,4 +1,4 @@
-package com.cthing.cmakeed.parser.tests.astnodes;
+package com.cthing.cmakeed.parser.tests;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
@@ -6,8 +6,6 @@ import java.util.Objects;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
-
-import com.cthing.cmakeed.parser.tests.CMakeTestCode;
 
 public class CMakeASTTestRunner extends BlockJUnit4ClassRunner {
 

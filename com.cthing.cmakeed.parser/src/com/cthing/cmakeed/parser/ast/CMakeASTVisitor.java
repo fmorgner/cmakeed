@@ -33,7 +33,7 @@ public interface CMakeASTVisitor {
 	}
 
 	/**
-	 * Callback that gets called when a file (CMakeLists.txt, CMake script, CMake
+	 * Callback that gets called when a "File" (CMakeLists.txt, CMake script, CMake
 	 * module) is encountered during AST traversal.
 	 * 
 	 * @param file
@@ -107,20 +107,6 @@ public interface CMakeASTVisitor {
 	 *         node's children, or abort the whole traversal.
 	 */
 	default Decision visit(CMakeASTNodeVariableReference variable) {
-		return Decision.CONTINUE;
-	}
-
-	/**
-	 * Callback that gets called when a command invocation is encountered during AST
-	 * traversal.
-	 * 
-	 * @param invocation
-	 *            The {@link CMakeASTNodeCommandInvocation} representing the command
-	 *            invocation being visited.
-	 * @return A {@link Decision} describing whether to continue traversal, skip the
-	 *         node's children, or abort the whole traversal.
-	 */
-	default Decision visitCommandInvocation(CMakeASTNodeCommandInvocation invocation) {
 		return Decision.CONTINUE;
 	}
 

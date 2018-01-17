@@ -1,4 +1,4 @@
-package com.cthing.cmakeed.parser.tests.astnodes;
+package com.cthing.cmakeed.parser.tests;
 
 import java.util.Optional;
 
