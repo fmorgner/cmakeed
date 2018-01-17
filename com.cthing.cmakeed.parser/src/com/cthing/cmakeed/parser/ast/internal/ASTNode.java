@@ -3,13 +3,11 @@ package com.cthing.cmakeed.parser.ast.internal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import com.cthing.cmakeed.parser.ast.CMakeASTNode;
-import com.cthing.cmakeed.parser.ast.CMakeASTNodeFile;
 import com.cthing.cmakeed.parser.ast.CMakeASTVisitor;
 import com.cthing.cmakeed.parser.ast.CMakeASTVisitor.Decision;
 
