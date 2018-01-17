@@ -6,6 +6,8 @@ import java.util.List;
 import com.cthing.cmakeed.parser.ast.CMakeASTNode;
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeArgument;
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeCommandInvocation;
+import com.cthing.cmakeed.parser.ast.CMakeASTVisitor;
+import com.cthing.cmakeed.parser.ast.CMakeASTVisitor.Decision;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.CommandInvocationContext;
 
 public class ASTNodeCommandInvocation extends ASTNodeNamedElement implements CMakeASTNodeCommandInvocation {
@@ -30,6 +32,11 @@ public class ASTNodeCommandInvocation extends ASTNodeNamedElement implements CMa
 		}
 	}
 
+	@Override
+	protected Decision doAccept(CMakeASTVisitor visitor) {
+		return visitor.visit(this);
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder(getName() + "(");

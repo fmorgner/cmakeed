@@ -11,7 +11,7 @@ import com.cthing.cmakeed.parser.ast.CMakeASTNodeEvaluatedArgument;
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeVariableReference;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.VariableReferenceContext;
 
-public class ASTNodeEvaluatedArgument extends ASTNodeArgument implements CMakeASTNodeEvaluatedArgument {
+public abstract class ASTNodeEvaluatedArgument extends ASTNodeArgument implements CMakeASTNodeEvaluatedArgument {
 
 	private final List<ASTNodeVariableReference> fVariableReferences = new ArrayList<>();
 	

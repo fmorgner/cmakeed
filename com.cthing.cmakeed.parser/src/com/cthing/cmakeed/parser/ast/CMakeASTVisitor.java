@@ -41,7 +41,72 @@ public interface CMakeASTVisitor {
 	 * @return A {@link Decision} describing whether to continue traversal, skip the
 	 *         node's children, or abort the whole traversal.
 	 */
-	default Decision visitFile(CMakeASTNode file) {
+	default Decision visit(CMakeASTNodeFile file) {
+		return Decision.CONTINUE;
+	}
+
+	/**
+	 * Callback that gets called when a "Bracket Argument" is encountered during AST
+	 * traversal.
+	 * 
+	 * @param file
+	 *            The {@link CMakeASTNode} representing the file being visited.
+	 * @return A {@link Decision} describing whether to continue traversal, skip the
+	 *         node's children, or abort the whole traversal.
+	 */
+	default Decision visit(CMakeASTNodeBracketArgument argument) {
+		return Decision.CONTINUE;
+	}
+
+	/**
+	 * Callback that gets called when a "Quoted Argument" is encountered during AST
+	 * traversal.
+	 * 
+	 * @param file
+	 *            The {@link CMakeASTNode} representing the file being visited.
+	 * @return A {@link Decision} describing whether to continue traversal, skip the
+	 *         node's children, or abort the whole traversal.
+	 */
+	default Decision visit(CMakeASTNodeQuotedArgument argument) {
+		return Decision.CONTINUE;
+	}
+
+	/**
+	 * Callback that gets called when a "Unquoted Argument" is encountered during
+	 * AST traversal.
+	 * 
+	 * @param file
+	 *            The {@link CMakeASTNode} representing the file being visited.
+	 * @return A {@link Decision} describing whether to continue traversal, skip the
+	 *         node's children, or abort the whole traversal.
+	 */
+	default Decision visit(CMakeASTNodeUnquotedArgument argument) {
+		return Decision.CONTINUE;
+	}
+
+	/**
+	 * Callback that gets called when a "Command Invocation" is encountered during
+	 * AST traversal.
+	 * 
+	 * @param file
+	 *            The {@link CMakeASTNode} representing the file being visited.
+	 * @return A {@link Decision} describing whether to continue traversal, skip the
+	 *         node's children, or abort the whole traversal.
+	 */
+	default Decision visit(CMakeASTNodeCommandInvocation argument) {
+		return Decision.CONTINUE;
+	}
+
+	/**
+	 * Callback that gets called when a "Variable Reference" is encountered during
+	 * AST traversal.
+	 * 
+	 * @param file
+	 *            The {@link CMakeASTNode} representing the file being visited.
+	 * @return A {@link Decision} describing whether to continue traversal, skip the
+	 *         node's children, or abort the whole traversal.
+	 */
+	default Decision visit(CMakeASTNodeVariableReference variable) {
 		return Decision.CONTINUE;
 	}
 

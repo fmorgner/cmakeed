@@ -1,6 +1,8 @@
 package com.cthing.cmakeed.parser.ast.internal;
 
 import com.cthing.cmakeed.parser.ast.CMakeASTNodeVariableReference;
+import com.cthing.cmakeed.parser.ast.CMakeASTVisitor;
+import com.cthing.cmakeed.parser.ast.CMakeASTVisitor.Decision;
 import com.cthing.cmakeed.parser.llparser.CMakeParser.VariableReferenceContext;
 
 public class ASTNodeVariableReference extends ASTNodeNamedElement implements CMakeASTNodeVariableReference {
@@ -12,6 +14,11 @@ public class ASTNodeVariableReference extends ASTNodeNamedElement implements CMa
 		context.getRuleContexts(VariableReferenceContext.class).stream()
 			.map(ASTNodeVariableReference::new)
 			.forEach(v -> v.setParent(this));
+	}
+	
+	@Override
+	protected Decision doAccept(CMakeASTVisitor visitor) {
+		return visitor.visit(this);
 	}
 
 }

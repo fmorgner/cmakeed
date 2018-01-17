@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import com.cthing.cmakeed.parser.ast.CMakeASTNode;
+import com.cthing.cmakeed.parser.ast.CMakeASTNodeFile;
 import com.cthing.cmakeed.parser.ast.CMakeASTVisitor;
 import com.cthing.cmakeed.parser.ast.CMakeASTVisitor.Decision;
 
@@ -51,9 +52,9 @@ abstract class ASTNode implements CMakeASTNode {
 	}
 
 	@Override
-	public boolean accept(CMakeASTVisitor visitor) {
-		final Decision decision = Objects.requireNonNull(visitor.visitFile(this));
-
+	public final boolean accept(CMakeASTVisitor visitor) {
+		final Decision decision = doAccept(visitor);
+		
 		if (decision == Decision.CONTINUE) {
 			for (CMakeASTNode child : fChildren) {
 				if (!child.accept(visitor)) {
@@ -65,6 +66,8 @@ abstract class ASTNode implements CMakeASTNode {
 		return decision != Decision.ABORT;
 	}
 
+	protected abstract Decision doAccept(CMakeASTVisitor visitor);
+	
 	protected ASTNode setParent(ASTNode parent) {
 		if(!(parent == this)) {
 			fParent = Optional.of(parent);
