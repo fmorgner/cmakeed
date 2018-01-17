@@ -1,5 +1,7 @@
 package com.cthing.cmakeed.parser.tests.ast;
 
+import java.util.Optional;
+
 import org.junit.runner.RunWith;
 
 import com.cthing.cmakeed.parser.CMakeParserPlugin;
@@ -11,7 +13,7 @@ public abstract class CMakeASTTest {
 
 	private String fSourceText;
 	
-	protected CMakeASTNode getAST() {
+	protected Optional<CMakeASTNode> getAST() {
 		CMakeASTProvider provider = CMakeParserPlugin.getService(CMakeASTProvider.class);
 		return provider.getAST(fSourceText);
 	}

@@ -3,6 +3,7 @@ package com.cthing.cmakeed.parser.ast.internal;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -19,33 +20,34 @@ public class ASTProvider implements CMakeASTProvider {
 
 	private final ASTBuilder fBuilder = new ASTBuilder();
 	
-	private CMakeASTNode getAST(InputStream sourceStream) {
+	private Optional<CMakeASTNode> getAST(InputStream sourceStream) {
 		try {
 			ANTLRInputStream input = new ANTLRInputStream(sourceStream);
 			CMakeLexer lexer = new CMakeLexer(input);
 			CommonTokenStream stream = new CommonTokenStream(lexer);
 			CMakeParser parser = new CMakeParser(stream);
-			return parser.file().accept(fBuilder);
+			return Optional.of(parser.file().accept(fBuilder));
 		} catch (IOException e) {
 			CMakeParserPlugin.logError(e, "Error while reading input stream");
 		}
 		
-		return null;
+		return Optional.empty();
 	}
 	
 	@Override
-	public CMakeASTNode getAST(String sourceText) {
+	public Optional<CMakeASTNode> getAST(String sourceText) {
 		return getAST(new ByteArrayInputStream(sourceText.getBytes()));
 	}
 
-	public CMakeASTNode getAST(IFile sourceFile) {
+	@Override
+	public Optional<CMakeASTNode> getAST(IFile sourceFile) {
 		try {
 			return getAST(sourceFile.getContents());
 		} catch (CoreException e) {
 			CMakeParserPlugin.logError(e, "Failed to read source file");
 		}
 		
-		return null;
+		return Optional.empty();
 	}
 
 }

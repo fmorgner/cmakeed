@@ -20,7 +20,7 @@ public class CMakeASTFileTest extends CMakeASTTest {
 	@Test
 	@CMakeTestCode("")
 	public void emptySourceFileProducesFileWithoutChildrenOrParent() throws Exception {
-		CMakeASTNode ast = getAST();
+		CMakeASTNode ast = getAST().get();
 
 		assertTrue(ast.getChildren().isEmpty());
 		assertThat(ast.getParent(), equalTo(Optional.empty()));
@@ -29,7 +29,7 @@ public class CMakeASTFileTest extends CMakeASTTest {
 	@Test
 	@CMakeTestCode("cmd()")
 	public void sourceFileContainingOneCommandInvocationWithoutArgumentsProducesFileWithOneChild() throws Exception {
-		CMakeASTNode ast = getAST();
+		CMakeASTNode ast = getAST().get();
 
 		assertThat(ast.getChildren().size(), equalTo(1));
 		assertThat(ast.getChildren(), everyItem(instanceOf(CMakeASTNodeCommandInvocation.class)));
@@ -42,7 +42,7 @@ public class CMakeASTFileTest extends CMakeASTTest {
 			+ "cmd2()"
 			)
 	public void sourceFileContainingTwoCommandInvocationsWithoutArgumentsProducesFileWithTwoChildren() throws Exception {
-		CMakeASTNode ast = getAST();
+		CMakeASTNode ast = getAST().get();
 
 		assertThat(ast.getChildren().size(), equalTo(2));
 		assertThat(ast.getChildren(), everyItem(instanceOf(CMakeASTNodeCommandInvocation.class)));
@@ -52,7 +52,7 @@ public class CMakeASTFileTest extends CMakeASTTest {
 	@Test
 	@CMakeTestCode("cmd(SOME UNQUOTED ARGUMENTS)")
 	public void sourceFileContainingOneCommandInvocationWithArgumentsProducesFileWithOneChild() throws Exception {
-		CMakeASTNode ast = getAST();
+		CMakeASTNode ast = getAST().get();
 		
 		assertThat(ast.getChildren().size(), equalTo(1));
 		assertThat(ast.getChildren(), everyItem(instanceOf(CMakeASTNodeCommandInvocation.class)));
@@ -65,7 +65,7 @@ public class CMakeASTFileTest extends CMakeASTTest {
 			+ "cmd(HELLO)\n"
 			+ "endfunction()")
 	public void sourceFileContainingOneFunctionDefinitionProducesFileWithTwoChildren() throws Exception {
-		CMakeASTNode ast = getAST();
+		CMakeASTNode ast = getAST().get();
 		
 		assertThat(ast.getChildren().size(), equalTo(2));
 		assertThat(ast.getChildren(), everyItem(instanceOf(CMakeASTNodeCommandInvocation.class)));
